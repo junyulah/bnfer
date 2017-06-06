@@ -89,6 +89,23 @@ console.log(JSON.stringify(grammer, null, 4));
 .    
 │──LICENSE    
 │──README.md    
+│──README_zh.md    
+│──coverage    
+│   │──coverage.json    
+│   │──lcov-report    
+│   │   │──base.css    
+│   │   │──bnfer    
+│   │   │   │──index.html    
+│   │   │   │──index.js.html    
+│   │   │   └──src    
+│   │   │       │──index.html    
+│   │   │       └──index.js.html    
+│   │   │──index.html    
+│   │   │──prettify.css    
+│   │   │──prettify.js    
+│   │   │──sort-arrow-sprite.png    
+│   │   └──sorter.js    
+│   └──lcov.info    
 │──index.js    
 │──package.json    
 │──src    
