@@ -1,6 +1,6 @@
 {
   "name": "bnfer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Parse bnf expressions to a structured json.",
   "main": "index.js",
   "scripts": {

@@ -4,6 +4,8 @@ const DELIMITER = ':=';
 
 const OR_DELIMITER = '|';
 
+const EPSILON = 'EPSILON';
+
 let parse = (str) => {
     let productions = [];
     let lines = str.split('\n');
@@ -77,8 +79,11 @@ let parseLine = (line, lineNumber) => {
     let restSentences = rest.split(OR_DELIMITER);
 
     for (let i = 0; i < restSentences.length; i++) {
-        let body = getBody(restSentences[i]);
-        productions.push([head, body]);
+        let restSentence = restSentences[i].trim();
+        if (restSentence) {
+            let body = getBody(restSentence);
+            productions.push([head, body]);
+        }
     }
 
 
@@ -87,19 +92,22 @@ let parseLine = (line, lineNumber) => {
 
 let getBody = (rest) => {
     let body = [];
-    let restParts = rest.split(' ');
-    for (let i = 0; i < restParts.length; i++) {
-        let part = restParts[i].trim();
-        if (part) {
+    if (rest === EPSILON) {
+        return body;
+    } else {
+        let restParts = rest.split(' ');
+        for (let i = 0; i < restParts.length; i++) {
+            let part = restParts[i].trim();
             body.push(part);
         }
-    }
 
-    return body;
+        return body;
+    }
 };
 
 let pointLine = (line, lineNumber) => `[${lineNumber}] ${line}`;
 
 module.exports = {
-    parse
+    parse,
+    EPSILON
 };

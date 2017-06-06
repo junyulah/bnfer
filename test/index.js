@@ -75,4 +75,16 @@ describe('index', () => {
             ]
         });
     });
+
+    it('epsilon', () => {
+        assert.deepEqual(parse('A := EPSILON | b c |'), {
+            startSymbol: 'A',
+            T: ['b', 'c'],
+            N: ['A'],
+            productions: [
+                ['A', []],
+                ['A', ['b', 'c']]
+            ]
+        });
+    });
 });
