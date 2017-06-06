@@ -87,4 +87,26 @@ describe('index', () => {
             ]
         });
     });
+
+    it('comment', () => {
+        assert.deepEqual(parse('# abcd').productions, []);
+        assert.deepEqual(parse('# abcd\n# def').productions, []);
+        assert.deepEqual(parse('A := a c\n# abcd\n# def'), {
+            startSymbol: 'A',
+            T: ['a', 'c'],
+            N: ['A'],
+            productions: [
+                ['A', ['a', 'c']]
+            ]
+        });
+        assert.deepEqual(parse('A := a c\n# abcd\n# def\nB := e f'), {
+            startSymbol: 'A',
+            T: ['a', 'c', 'e', 'f'],
+            N: ['A', 'B'],
+            productions: [
+                ['A', ['a', 'c']],
+                ['B', ['e', 'f']]
+            ]
+        });
+    });
 });

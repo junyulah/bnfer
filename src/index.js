@@ -6,6 +6,8 @@ const OR_DELIMITER = '|';
 
 const EPSILON = 'EPSILON';
 
+const COMMENT_PREFIX = '#';
+
 let parse = (str) => {
     let productions = [];
     let lines = str.split('\n');
@@ -60,7 +62,12 @@ let toCtxGrammer = (productions) => {
 };
 
 let parseLine = (line, lineNumber) => {
+    line = line.trim();
     let productions = [];
+
+    if(line[0] === COMMENT_PREFIX)  {
+        return productions;
+    }
 
     let parts = line.split(DELIMITER);
     if (parts.length < 2) {
