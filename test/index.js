@@ -109,4 +109,17 @@ describe('index', () => {
             ]
         });
     });
+
+    it('| start line', () => {
+        assert.deepEqual(parse('A := a B\n| c D\n B := b'), {
+            'startSymbol': 'A',
+            'T': ['a', 'c', 'D', 'b'],
+            'N': ['A', 'B'],
+            'productions': [
+                ['A', ['a', 'B']],
+                ['A', ['c', 'D']],
+                ['B', ['b']]
+            ]
+        });
+    });
 });

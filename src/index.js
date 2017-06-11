@@ -16,7 +16,7 @@ let parse = (str) => {
         let line = lines[i];
         line = line.trim();
         if (line) {
-            productions = productions.concat(parseLine(line, i));
+            productions = productions.concat(parseLine(line, i, productions.length ? productions[productions.length - 1][0] : null));
         }
     }
 
@@ -61,27 +61,40 @@ let toCtxGrammer = (productions) => {
     };
 };
 
-let parseLine = (line, lineNumber) => {
+let parseLine = (line, lineNumber, prevHead) => {
     line = line.trim();
+
+    // comment line
+    if (line[0] === COMMENT_PREFIX) {
+        return [];
+    } else if (line[0] === OR_DELIMITER) {
+        let rest = line.substring(1);
+        if (!prevHead) {
+            throw new Error(`head is a empty string.\n${pointLine(line, lineNumber)}`);
+        }
+        return parseRest(rest, prevHead);
+    } else {
+        // split head and body
+        let parts = line.split(DELIMITER);
+        if (parts.length < 2) {
+            throw new Error(`Fail to split line, missing delimiter :=. \n${pointLine(line, lineNumber)}`);
+        }
+
+        let head = parts[0];
+        let rest = line.substring(head.length + DELIMITER.length);
+
+        //
+        head = head.trim();
+        if (!head) {
+            throw new Error(`head is a empty string.\n${pointLine(line, lineNumber)}`);
+        }
+
+        return parseRest(rest, head);
+    }
+};
+
+let parseRest = (rest, head) => {
     let productions = [];
-
-    if(line[0] === COMMENT_PREFIX)  {
-        return productions;
-    }
-
-    let parts = line.split(DELIMITER);
-    if (parts.length < 2) {
-        throw new Error(`Fail to split line, missing delimiter :=. \n${pointLine(line, lineNumber)}`);
-    }
-
-    let head = parts[0];
-    let rest = line.substring(head.length + DELIMITER.length);
-
-    //
-    head = head.trim();
-    if (!head) {
-        throw new Error(`head is a empty string.\n${pointLine(line, lineNumber)}`);
-    }
 
     let restSentences = rest.split(OR_DELIMITER);
 
@@ -92,7 +105,6 @@ let parseLine = (line, lineNumber) => {
             productions.push([head, body]);
         }
     }
-
 
     return productions;
 };
