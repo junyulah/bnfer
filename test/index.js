@@ -122,4 +122,39 @@ describe('index', () => {
             ]
         });
     });
+
+    it('@ annotation', () => {
+        assert.deepEqual(parse('A := a B @ a * B'), {
+            'startSymbol': 'A',
+            'T': ['a', 'B'],
+            'N': ['A'],
+            'productions': [
+                ['A', ['a', 'B'], 'a * B']
+            ]
+        });
+    });
+
+    it('@ annotation2', () => {
+        assert.deepEqual(parse('A := a B @ a * B | c @e'), {
+            'startSymbol': 'A',
+            'T': ['a', 'B', 'c'],
+            'N': ['A'],
+            'productions': [
+                ['A', ['a', 'B'], 'a * B'],
+                ['A', ['c'], 'e']
+            ]
+        });
+    });
+
+    it('@ annotation3', () => {
+        assert.deepEqual(parse('A := a B @ a * B \nA := c @e'), {
+            'startSymbol': 'A',
+            'T': ['a', 'B', 'c'],
+            'N': ['A'],
+            'productions': [
+                ['A', ['a', 'B'], 'a * B'],
+                ['A', ['c'], 'e']
+            ]
+        });
+    });
 });

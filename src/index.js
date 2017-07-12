@@ -1,12 +1,10 @@
 'use strict';
 
-const DELIMITER = ':=';
-
-const OR_DELIMITER = '|';
-
-const EPSILON = 'EPSILON';
-
-const COMMENT_PREFIX = '#';
+const DELIMITER = ':=',
+    OR_DELIMITER = '|',
+    EPSILON = 'EPSILON',
+    ANNOTATE = '@',
+    COMMENT_PREFIX = '#';
 
 let parse = (str) => {
     let productions = [];
@@ -101,8 +99,15 @@ let parseRest = (rest, head) => {
     for (let i = 0; i < restSentences.length; i++) {
         let restSentence = restSentences[i].trim();
         if (restSentence) {
-            let body = getBody(restSentence);
-            productions.push([head, body]);
+            let [bodySentence, annotation] = restSentence.split(ANNOTATE);
+            bodySentence = (bodySentence || '').trim();
+            annotation = (annotation || '').trim();
+            let body = getBody(bodySentence);
+            if (!annotation) {
+                productions.push([head, body]);
+            } else {
+                productions.push([head, body, annotation]);
+            }
         }
     }
 
