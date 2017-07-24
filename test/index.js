@@ -1,7 +1,8 @@
 'use strict';
 
 let {
-    parse
+    parse,
+    generateProductionId
 } = require('..');
 let assert = require('assert');
 
@@ -156,5 +157,11 @@ describe('index', () => {
                 ['A', ['c'], 'e']
             ]
         });
+    });
+
+    it('generateProductionId', () => {
+        assert.equal(generateProductionId(['A', []]), 'A := EPSILON');
+        assert.equal(generateProductionId(['A', ['a']]), 'A := a');
+        assert.equal(generateProductionId(['A', ['a', 'B', 'c']]), 'A := a B c');
     });
 });

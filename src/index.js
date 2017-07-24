@@ -131,7 +131,16 @@ let getBody = (rest) => {
 
 let pointLine = (line, lineNumber) => `[${lineNumber}] ${line}`;
 
+let generateProductionId = ([head, body]) => {
+    let bodyStr = body.join(' ');
+    if (!body.length) {
+        bodyStr = 'EPSILON';
+    }
+    return `${head} := ${bodyStr}`;
+};
+
 module.exports = {
     parse,
-    EPSILON
+    EPSILON,
+    generateProductionId
 };
